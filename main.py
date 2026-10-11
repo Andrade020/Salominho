@@ -29,6 +29,8 @@ BLUE = (74, 142, 210)
 MUTED = (120, 112, 100)
 LOCKED = (174, 170, 158)
 
+GENESIS_LANDMARKS = {1: 0, 3: 1, 6: 2, 11: 3, 12: 4, 37: 5}
+
 
 def wrap_text(text: str, font: pygame.font.Font, max_width: int) -> list[str]:
     words, result, line = text.split(), [], ""
@@ -85,6 +87,25 @@ class Game:
             self.mascot = pygame.transform.scale(self.mascot, (210, 210))
         except (pygame.error, FileNotFoundError):
             self.mascot = None
+
+        # Primeiros sprites reais do Mundo Gênesis.
+        self.genesis_sprites = []
+        sheet_path = (
+            BASE / "assets" / "worlds" / "old_testament" / "01_genesis"
+            / "sprites" / "genesis_spritesheet.png"
+        )
+        if sheet_path.is_file():
+            try:
+                sheet = pygame.image.load(str(sheet_path)).convert_alpha()
+                for index in range(6):
+                    frame = sheet.subsurface(
+                        pygame.Rect(index * 64, 0, 64, 64)
+                    ).copy()
+                    self.genesis_sprites.append(
+                        pygame.transform.scale(frame, (40, 40))
+                    )
+            except pygame.error as exc:
+                print(f"Não foi possível carregar os sprites de Gênesis: {exc}")
 
     @property
     def xp(self) -> int:
@@ -241,6 +262,19 @@ class Game:
             pygame.draw.circle(self.screen, DARK, (x, y), 30, 3)
             label = self.small.render(str(chapter), True, INK)
             self.screen.blit(label, label.get_rect(center=(x, y)))
+
+            # Marcos visuais de algumas histórias principais de Gênesis.
+            if (
+                world.id == "genesis"
+                and chapter in GENESIS_LANDMARKS
+                and self.genesis_sprites
+            ):
+                sprite_index = GENESIS_LANDMARKS[chapter]
+                if sprite_index < len(self.genesis_sprites):
+                    self.screen.blit(
+                        self.genesis_sprites[sprite_index],
+                        (x - 20, y - 72),
+                    )
 
             hit = pygame.Rect(x - 31, y - 31, 62, 62)
             self.buttons.append((hit, lambda c=chapter: self.open_chapter(c)))
