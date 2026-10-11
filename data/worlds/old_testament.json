@@ -1,0 +1,322 @@
+{
+  "testament": "old",
+  "name_pt": "Antigo Testamento",
+  "worlds": [
+    {
+      "order": 1,
+      "id": "genesis",
+      "name": "Gênesis",
+      "chapters": 50,
+      "asset_dir": "assets/worlds/old_testament/01_genesis",
+      "status": "next"
+    },
+    {
+      "order": 2,
+      "id": "exodo",
+      "name": "Êxodo",
+      "chapters": 40,
+      "asset_dir": "assets/worlds/old_testament/02_exodo",
+      "status": "planned"
+    },
+    {
+      "order": 3,
+      "id": "levitico",
+      "name": "Levítico",
+      "chapters": 27,
+      "asset_dir": "assets/worlds/old_testament/03_levitico",
+      "status": "planned"
+    },
+    {
+      "order": 4,
+      "id": "numeros",
+      "name": "Números",
+      "chapters": 36,
+      "asset_dir": "assets/worlds/old_testament/04_numeros",
+      "status": "planned"
+    },
+    {
+      "order": 5,
+      "id": "deuteronomio",
+      "name": "Deuteronômio",
+      "chapters": 34,
+      "asset_dir": "assets/worlds/old_testament/05_deuteronomio",
+      "status": "planned"
+    },
+    {
+      "order": 6,
+      "id": "josue",
+      "name": "Josué",
+      "chapters": 24,
+      "asset_dir": "assets/worlds/old_testament/06_josue",
+      "status": "planned"
+    },
+    {
+      "order": 7,
+      "id": "juizes",
+      "name": "Juízes",
+      "chapters": 21,
+      "asset_dir": "assets/worlds/old_testament/07_juizes",
+      "status": "planned"
+    },
+    {
+      "order": 8,
+      "id": "rute",
+      "name": "Rute",
+      "chapters": 4,
+      "asset_dir": "assets/worlds/old_testament/08_rute",
+      "status": "planned"
+    },
+    {
+      "order": 9,
+      "id": "1_samuel",
+      "name": "1 Samuel",
+      "chapters": 31,
+      "asset_dir": "assets/worlds/old_testament/09_1_samuel",
+      "status": "planned"
+    },
+    {
+      "order": 10,
+      "id": "2_samuel",
+      "name": "2 Samuel",
+      "chapters": 24,
+      "asset_dir": "assets/worlds/old_testament/10_2_samuel",
+      "status": "planned"
+    },
+    {
+      "order": 11,
+      "id": "1_reis",
+      "name": "1 Reis",
+      "chapters": 22,
+      "asset_dir": "assets/worlds/old_testament/11_1_reis",
+      "status": "planned"
+    },
+    {
+      "order": 12,
+      "id": "2_reis",
+      "name": "2 Reis",
+      "chapters": 25,
+      "asset_dir": "assets/worlds/old_testament/12_2_reis",
+      "status": "planned"
+    },
+    {
+      "order": 13,
+      "id": "1_cronicas",
+      "name": "1 Crônicas",
+      "chapters": 29,
+      "asset_dir": "assets/worlds/old_testament/13_1_cronicas",
+      "status": "planned"
+    },
+    {
+      "order": 14,
+      "id": "2_cronicas",
+      "name": "2 Crônicas",
+      "chapters": 36,
+      "asset_dir": "assets/worlds/old_testament/14_2_cronicas",
+      "status": "planned"
+    },
+    {
+      "order": 15,
+      "id": "esdras",
+      "name": "Esdras",
+      "chapters": 10,
+      "asset_dir": "assets/worlds/old_testament/15_esdras",
+      "status": "planned"
+    },
+    {
+      "order": 16,
+      "id": "neemias",
+      "name": "Neemias",
+      "chapters": 13,
+      "asset_dir": "assets/worlds/old_testament/16_neemias",
+      "status": "planned"
+    },
+    {
+      "order": 17,
+      "id": "ester",
+      "name": "Ester",
+      "chapters": 10,
+      "asset_dir": "assets/worlds/old_testament/17_ester",
+      "status": "planned"
+    },
+    {
+      "order": 18,
+      "id": "jo",
+      "name": "Jó",
+      "chapters": 42,
+      "asset_dir": "assets/worlds/old_testament/18_jo",
+      "status": "planned"
+    },
+    {
+      "order": 19,
+      "id": "salmos",
+      "name": "Salmos",
+      "chapters": 150,
+      "asset_dir": "assets/worlds/old_testament/19_salmos",
+      "status": "planned"
+    },
+    {
+      "order": 20,
+      "id": "proverbios",
+      "name": "Provérbios",
+      "chapters": 31,
+      "asset_dir": "assets/worlds/old_testament/20_proverbios",
+      "status": "planned"
+    },
+    {
+      "order": 21,
+      "id": "eclesiastes",
+      "name": "Eclesiastes",
+      "chapters": 12,
+      "asset_dir": "assets/worlds/old_testament/21_eclesiastes",
+      "status": "planned"
+    },
+    {
+      "order": 22,
+      "id": "cantares",
+      "name": "Cantares",
+      "chapters": 8,
+      "asset_dir": "assets/worlds/old_testament/22_cantares",
+      "status": "planned"
+    },
+    {
+      "order": 23,
+      "id": "isaias",
+      "name": "Isaías",
+      "chapters": 66,
+      "asset_dir": "assets/worlds/old_testament/23_isaias",
+      "status": "planned"
+    },
+    {
+      "order": 24,
+      "id": "jeremias",
+      "name": "Jeremias",
+      "chapters": 52,
+      "asset_dir": "assets/worlds/old_testament/24_jeremias",
+      "status": "planned"
+    },
+    {
+      "order": 25,
+      "id": "lamentacoes",
+      "name": "Lamentações",
+      "chapters": 5,
+      "asset_dir": "assets/worlds/old_testament/25_lamentacoes",
+      "status": "planned"
+    },
+    {
+      "order": 26,
+      "id": "ezequiel",
+      "name": "Ezequiel",
+      "chapters": 48,
+      "asset_dir": "assets/worlds/old_testament/26_ezequiel",
+      "status": "planned"
+    },
+    {
+      "order": 27,
+      "id": "daniel",
+      "name": "Daniel",
+      "chapters": 12,
+      "asset_dir": "assets/worlds/old_testament/27_daniel",
+      "status": "planned"
+    },
+    {
+      "order": 28,
+      "id": "oseias",
+      "name": "Oséias",
+      "chapters": 14,
+      "asset_dir": "assets/worlds/old_testament/28_oseias",
+      "status": "planned"
+    },
+    {
+      "order": 29,
+      "id": "joel",
+      "name": "Joel",
+      "chapters": 3,
+      "asset_dir": "assets/worlds/old_testament/29_joel",
+      "status": "planned"
+    },
+    {
+      "order": 30,
+      "id": "amos",
+      "name": "Amós",
+      "chapters": 9,
+      "asset_dir": "assets/worlds/old_testament/30_amos",
+      "status": "planned"
+    },
+    {
+      "order": 31,
+      "id": "obadias",
+      "name": "Obadias",
+      "chapters": 1,
+      "asset_dir": "assets/worlds/old_testament/31_obadias",
+      "status": "planned"
+    },
+    {
+      "order": 32,
+      "id": "jonas",
+      "name": "Jonas",
+      "chapters": 4,
+      "asset_dir": "assets/worlds/old_testament/32_jonas",
+      "status": "planned"
+    },
+    {
+      "order": 33,
+      "id": "miqueias",
+      "name": "Miqueias",
+      "chapters": 7,
+      "asset_dir": "assets/worlds/old_testament/33_miqueias",
+      "status": "planned"
+    },
+    {
+      "order": 34,
+      "id": "naum",
+      "name": "Naum",
+      "chapters": 3,
+      "asset_dir": "assets/worlds/old_testament/34_naum",
+      "status": "planned"
+    },
+    {
+      "order": 35,
+      "id": "habacuque",
+      "name": "Habacuque",
+      "chapters": 3,
+      "asset_dir": "assets/worlds/old_testament/35_habacuque",
+      "status": "planned"
+    },
+    {
+      "order": 36,
+      "id": "sofonias",
+      "name": "Sofonias",
+      "chapters": 3,
+      "asset_dir": "assets/worlds/old_testament/36_sofonias",
+      "status": "planned"
+    },
+    {
+      "order": 37,
+      "id": "ageu",
+      "name": "Ageu",
+      "chapters": 2,
+      "asset_dir": "assets/worlds/old_testament/37_ageu",
+      "status": "planned"
+    },
+    {
+      "order": 38,
+      "id": "zacarias",
+      "name": "Zacarias",
+      "chapters": 14,
+      "asset_dir": "assets/worlds/old_testament/38_zacarias",
+      "status": "planned"
+    },
+    {
+      "order": 39,
+      "id": "malaquias",
+      "name": "Malaquias",
+      "chapters": 4,
+      "asset_dir": "assets/worlds/old_testament/39_malaquias",
+      "status": "planned"
+    }
+  ],
+  "totals": {
+    "books": 39,
+    "chapters": 929
+  }
+}
