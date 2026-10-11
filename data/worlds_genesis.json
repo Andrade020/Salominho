@@ -1,0 +1,18 @@
+{
+  "id": "genesis",
+  "name": "Gênesis",
+  "chapters": 50,
+  "description": "Da criação ao povo de Israel no Egito.",
+  "landmarks": {
+    "1": "Criação",
+    "2": "Jardim do Éden",
+    "3": "Queda",
+    "6": "Noé",
+    "11": "Babel",
+    "12": "Abraão",
+    "22": "Isaque",
+    "28": "Jacó",
+    "37": "José",
+    "50": "Fim de Gênesis"
+  }
+}

@@ -80,3 +80,17 @@ A base do jogo agora usa o catálogo real do Antigo Testamento:
 - devocional demonstrativo integrado.
 
 O cenário atual do mapa é procedural e temporário. Cada livro receberá seu próprio `background.png` em `assets/worlds/old_testament/<livro>/`.
+
+
+## Mapa rolável de Gênesis
+
+O Mundo 1 agora possui um mapa vertical desenhado em Python/Pygame:
+
+- 50 capítulos = 50 bolinhas/fases;
+- trilha serpenteada conectando os capítulos;
+- rolagem com roda do mouse, ↑/↓, W/S, PageUp/PageDown, Home e End;
+- quatro regiões visuais: Criação/Éden, Noé/Babel, Patriarcas e José/Egito;
+- marcos procedurais como árvore, arca, Torre de Babel, tendas e pirâmides;
+- o progresso persistente continua definindo bolinhas não lidas, lidas e dominadas.
+
+O mapa de outros livros continua usando o layout genérico enquanto os cenários específicos são produzidos.
