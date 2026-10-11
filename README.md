@@ -1,119 +1,125 @@
-# 🦁 Salominho | SalmoNela
+# 🦁 Salominho
 
-Protótipo de jogo de estudos bíblicos em **Python + Pygame**.
+Jogo educativo de estudos bíblicos em **Python + Pygame**, com progressão por livros e capítulos da Bíblia.
 
-## Versão 0.1
+## Versão atual
 
-- Menu com o Salmão (imagem conceitual temporária).
-- Mapa de Gênesis com dez fases esboçadas e uma acessível.
-- Leitura de Gênesis 1:1–5 via `bible-api.com`, com cache local e fallback de 1 versículo.
-- Quiz demonstrativo com 3 perguntas, explicações, resultados e XP.
-- Projeto preparado para sprites transparentes e textos offline no futuro.
+**v0.4.0 — Mapas do Pentateuco**
 
-## Vinheta de abertura (v0.2)
+Esta versão consolida a estrutura de mundos, progresso persistente e os cinco primeiros mapas do Antigo Testamento.
 
-Tema instrumental de aproximadamente **11,8 segundos**, em **Sol maior** a **112 BPM**. O jogo toca a vinheta na abertura; pressione **M** para silenciar ou tocar novamente.
+### Estado atual
 
-`src/audio.py` sintetiza uma versão WAV automaticamente no primeiro acesso, sem numpy nem ffmpeg. Para usar o arranjo estéreo original, copie `salominho_vinheta_v01.ogg` do [pacote de áudio da vinheta](https://github.com/CarlSouza02/Salominho/tree/main/assets/audio) para `assets/audio/`; se existir, o jogo dá preferência ao OGG. O MIDI editável está no repositório.
+- **39 mundos** do Antigo Testamento cadastrados;
+- **929 capítulos/fases** disponíveis na estrutura;
+- progresso local em `save/progress.json`;
+- estados de capítulo: **pendente**, **concluído** e **dominado**;
+- seleção de mundos paginada;
+- mapas roláveis;
+- Gênesis 1 com leitura e quiz demonstrativos;
+- sistema de áudio/vinheta;
+- **Pentateuco funcional com 187 fases**:
+  - Gênesis: 50;
+  - Êxodo: 40;
+  - Levítico: 27;
+  - Números: 36;
+  - Deuteronômio: 34.
 
-## Executar no Ubuntu/Debian
+## Direção visual dos mapas
+
+A arquitetura definida para os mapas é:
+
+```text
+background pixel-art do livro
+          +
+trilha e capítulos desenhados pelo Python
+          +
+estado dinâmico do progresso
+```
+
+O **cenário artístico** deve ficar em um `background.png` próprio de cada livro.  
+O Python/Pygame desenha por cima:
+
+- caminho entre fases;
+- número do capítulo;
+- 🔴 capítulo pendente;
+- 🔵 capítulo concluído;
+- ⭐ capítulo dominado, quando aplicável.
+
+Isso permite manter o mapa visualmente rico sem precisar gerar uma nova imagem sempre que o progresso do jogador mudar.
+
+### Temas do Pentateuco
+
+| Mundo | Tema visual |
+|---|---|
+| **Gênesis** | Criação e Éden → Queda/Caim/Noé → Babel/Patriarcas → José/Egito |
+| **Êxodo** | Egito/opressão → Moisés → Pragas/Páscoa → Mar Vermelho → Deserto/maná → Sinai/Tabernáculo |
+| **Levítico** | Tabernáculo, altar, tendas, sacerdócio e utensílios sagrados |
+| **Números** | Deserto, grande acampamento, montanhas e peregrinação |
+| **Deuteronômio** | Planícies de Moabe, Jordão, Canaã e Monte Nebo |
+
+> Os arquivos `map_generated.png` atuais são **protótipos técnicos**. Eles servem para validar a estrutura, quantidade de fases e geração por código, mas **não representam a arte final** dos mapas.
+
+## Estrutura principal
+
+```text
+Salominho/
+├── main.py
+├── VERSION
+│
+├── src/
+│   ├── audio.py
+│   ├── bible.py
+│   ├── levels.py
+│   ├── map_art.py
+│   ├── map_layout.py
+│   ├── pentateuch_maps.py
+│   ├── progress.py
+│   └── worlds.py
+│
+├── tools/
+│   └── generate_pentateuch_maps.py
+│
+├── data/
+│   ├── bible/
+│   └── worlds/
+│       └── old_testament.json
+│
+├── assets/
+│   ├── audio/
+│   ├── mascot/
+│   └── worlds/
+│       └── old_testament/
+│           ├── 01_genesis/
+│           ├── 02_exodo/
+│           ├── 03_levitico/
+│           ├── 04_numeros/
+│           └── 05_deuteronomio/
+│
+├── save/
+└── tests/
+```
+
+## Executar
+
+Ubuntu/Debian:
 
 ```bash
 sudo apt update
-sudo apt install python3-pygame python3-requests
+sudo apt install python3-pygame python3-requests python3-pil
+
 git clone https://github.com/CarlSouza02/Salominho.git
 cd Salominho
 python3 main.py
 ```
 
-No VS Code, selecione o interpretador `/usr/bin/python3` se o Pygame não for encontrado.
-
-## Testes
+Também é possível instalar as dependências listadas no projeto:
 
 ```bash
-python3 -m unittest discover -s tests -v
+pip install -r requirements.txt
 ```
 
-## Estrutura
-
-```text
-main.py                    telas e loop Pygame
-src/bible.py               cliente bíblico, cache e fallback
-src/levels.py              fases planejadas e quiz demonstrativo
-src/audio.py               reprodução e síntese offline da vinheta
-assets/audio/              MIDI e instruções para OGG estéreo
-assets/mascot/concept.png  miniatura conceitual (não é sprite transparente)
-docs/ASSETS.md             especificações dos sprites e tiles
-data/bible/README.md       plano de importação bíblica e créditos
-tests/test_core.py         testes das funções de conteúdo
-```
-
-## Textos e licenças
-
-A amostra offline de Gênesis 1:1 é da **Bíblia Livre (2018)** de Diego Santos, Mario Sérgio e Marco Teles, disponível em https://ebible.org/porbr2018/, sob licença **CC BY 4.0 Brasil**. O texto completo não está incluído.
-
-O serviço `bible-api.com` é externo. Para o lançamento, a proposta é importar uma tradução aberta para SQLite.
-
-## Roadmap
-
-- [x] Menu em Pygame e mapa provisório
-- [x] Uma fase com quiz e XP
-- [x] Consulta bíblica demonstrativa com cache
-- [ ] Criar sprites PNG transparentes e animações
-- [ ] Desenhar tiles e mapa pixel art
-- [ ] Integrar Bíblia offline em SQLite
-- [ ] Desenvolver fases seguintes e salvar progresso
-- [ ] Amigos, duelos e ranking
-
-
-## Protótipo v0.3 — mundos e progresso
-
-A base do jogo agora usa o catálogo real do Antigo Testamento:
-
-- **39 mundos** cadastrados em `data/worlds/old_testament.json`;
-- **929 capítulos/fases** navegáveis;
-- seleção de mundos paginada;
-- mapa de capítulos gerado dinamicamente para qualquer livro;
-- progresso local persistente em `save/progress.json`;
-- estados de capítulo: **não lido**, **lido** e **dominado**;
-- Gênesis 1 continua como a primeira fase jogável do protótipo;
-- devocional demonstrativo integrado.
-
-O cenário atual do mapa é procedural e temporário. Cada livro receberá seu próprio `background.png` em `assets/worlds/old_testament/<livro>/`.
-
-
-## Mapa rolável de Gênesis
-
-O Mundo 1 agora possui um mapa vertical desenhado em Python/Pygame:
-
-- 50 capítulos = 50 bolinhas/fases;
-- trilha serpenteada conectando os capítulos;
-- rolagem com roda do mouse, ↑/↓, W/S, PageUp/PageDown, Home e End;
-- quatro regiões visuais: Criação/Éden, Noé/Babel, Patriarcas e José/Egito;
-- marcos procedurais como árvore, arca, Torre de Babel, tendas e pirâmides;
-- o progresso persistente continua definindo bolinhas não lidas, lidas e dominadas.
-
-O mapa de outros livros continua usando o layout genérico enquanto os cenários específicos são produzidos.
-
-
-## Pentateuco funcional
-
-Os cinco primeiros mundos agora possuem mapa próprio no motor rolável:
-
-- Gênesis: 50 fases;
-- Êxodo: 40 fases;
-- Levítico: 27 fases;
-- Números: 36 fases;
-- Deuteronômio: 34 fases.
-
-Total: **187 capítulos/fases**.
-
-Nesta etapa o foco é estrutural: bolinhas, trilha, clique, rolagem e progresso. A decoração específica de cada mapa será feita em seguida. Cada uma das cinco pastas também possui um `map_preview.svg` para visualização direta no GitHub.
-
-
-## Gerador Python dos 5 mapas do Pentateuco
-
-Os PNGs temáticos dos cinco primeiros livros são gerados por código Python com Pillow, sem depender de imagens externas.
+## Gerar os mapas técnicos do Pentateuco
 
 ```bash
 python3 tools/generate_pentateuch_maps.py
@@ -129,15 +135,13 @@ assets/worlds/old_testament/04_numeros/map_generated.png
 assets/worlds/old_testament/05_deuteronomio/map_generated.png
 ```
 
-Cada capítulo é uma fase. Por padrão, azul representa capítulo concluído e vermelho representa capítulo pendente.
-
-É possível gerar apenas um livro:
+Gerar apenas um livro:
 
 ```bash
 python3 tools/generate_pentateuch_maps.py --only exodo
 ```
 
-E também controlar quais capítulos aparecem como concluídos:
+Definir capítulos concluídos:
 
 ```bash
 python3 tools/generate_pentateuch_maps.py \
@@ -145,10 +149,46 @@ python3 tools/generate_pentateuch_maps.py \
   --completed exodo=1-4,8
 ```
 
-Temas implementados:
+## Testes
 
-- Gênesis: Criação/Éden → Queda/Caim/Noé → Babel/Patriarcas → José/Egito.
-- Êxodo: Egito → Moisés → Pragas/Páscoa → Mar Vermelho → Deserto/Maná → Sinai/Tabernáculo.
-- Levítico: Tabernáculo, altar, tendas, áreas rituais e utensílios sagrados.
-- Números: grande acampamento, deserto, peregrinação, oásis, espias e serpente de bronze.
-- Deuteronômio: Moabe, memória da aliança, Jordão, Canaã e Monte Nebo.
+```bash
+python3 -m unittest discover -s tests -v
+```
+
+## Bíblia
+
+A implementação atual usa uma consulta demonstrativa ao `bible-api.com` e cache local.
+
+O fallback de Gênesis 1:1 utiliza a **Bíblia Livre (2018)**, de Diego Santos, Mario Sérgio e Marco Teles, disponibilizada pelo eBible sob licença **CC BY 4.0 Brasil**.
+
+Para uma versão de produção, o plano é utilizar uma tradução licenciada/aberta armazenada localmente, preferencialmente em SQLite.
+
+## Áudio
+
+A vinheta de abertura é controlada por `src/audio.py`.
+
+- WAV pode ser sintetizado localmente;
+- existe MIDI editável no repositório;
+- se `assets/audio/salominho_vinheta_v01.ogg` estiver presente, o jogo pode priorizar essa versão.
+
+## Roadmap da v0.4.x
+
+- [x] catálogo dos 39 livros do Antigo Testamento;
+- [x] progresso persistente;
+- [x] mapas roláveis;
+- [x] Pentateuco com 187 fases;
+- [x] gerador técnico em Python;
+- [ ] substituir os mapas técnicos por **backgrounds pixel-art finais**;
+- [ ] integrar os backgrounds finais ao Pygame;
+- [ ] manter bolinhas/trilha dinâmicas sobre a arte;
+- [ ] preencher leitura, quiz e devocional por capítulo;
+- [ ] Bíblia offline;
+- [ ] sprites definitivos do Salominho;
+- [ ] modo EBD/gincana.
+
+## Histórico resumido
+
+- **v0.1**: menu, Gênesis 1, quiz e XP.
+- **v0.2**: vinheta e áudio.
+- **v0.3**: 39 mundos, 929 capítulos e progresso persistente.
+- **v0.4.0**: mapas do Pentateuco, 187 fases e definição da arquitetura visual final.
