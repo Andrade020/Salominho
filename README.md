@@ -94,3 +94,18 @@ O Mundo 1 agora possui um mapa vertical desenhado em Python/Pygame:
 - o progresso persistente continua definindo bolinhas não lidas, lidas e dominadas.
 
 O mapa de outros livros continua usando o layout genérico enquanto os cenários específicos são produzidos.
+
+
+## Pentateuco funcional
+
+Os cinco primeiros mundos agora possuem mapa próprio no motor rolável:
+
+- Gênesis: 50 fases;
+- Êxodo: 40 fases;
+- Levítico: 27 fases;
+- Números: 36 fases;
+- Deuteronômio: 34 fases.
+
+Total: **187 capítulos/fases**.
+
+Nesta etapa o foco é estrutural: bolinhas, trilha, clique, rolagem e progresso. A decoração específica de cada mapa será feita em seguida. Cada uma das cinco pastas também possui um `map_preview.svg` para visualização direta no GitHub.

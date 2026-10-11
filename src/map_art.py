@@ -168,3 +168,55 @@ def draw_genesis_background(screen, viewport, scroll_y, virtual_height):
     draw_pyramid(screen, viewport.left + 850, 2390, viewport, scroll_y, 60)
 
     screen.set_clip(None)
+
+
+
+def draw_pentateuch_background(screen, viewport, scroll_y, config):
+    """Fundo funcional do Pentateuco.
+
+    Gênesis preserva o cenário procedural já criado. Os outros quatro livros
+    usam uma base simples por enquanto; a decoração será feita depois.
+    """
+    if config.id == "genesis":
+        draw_genesis_background(
+            screen,
+            viewport,
+            scroll_y,
+            config.world_height,
+        )
+        return
+
+    screen.set_clip(viewport)
+    pygame.draw.rect(screen, config.background, viewport)
+
+    # Faixas suaves ajudam a enxergar que o mapa continua durante a rolagem,
+    # sem comprometer a futura direção de arte.
+    stripe_h = 220
+    for index, world_y in enumerate(range(0, config.world_height + stripe_h, stripe_h)):
+        sy = _screen_y(world_y, viewport, scroll_y)
+        if not _visible(sy, viewport, stripe_h):
+            continue
+        delta = 8 if index % 2 == 0 else -5
+        stripe = tuple(
+            max(0, min(255, channel + delta))
+            for channel in config.background
+        )
+        pygame.draw.rect(
+            screen,
+            stripe,
+            pygame.Rect(viewport.left, sy, viewport.width, stripe_h),
+        )
+
+    # Borda/linha lateral simples para diferenciar cada livro.
+    pygame.draw.rect(
+        screen,
+        config.accent,
+        pygame.Rect(viewport.left, viewport.top, 22, viewport.height),
+    )
+    pygame.draw.rect(
+        screen,
+        config.accent,
+        pygame.Rect(viewport.right - 22, viewport.top, 22, viewport.height),
+    )
+
+    screen.set_clip(None)

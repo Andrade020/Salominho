@@ -8,7 +8,7 @@
       "name": "Gênesis",
       "chapters": 50,
       "asset_dir": "assets/worlds/old_testament/01_genesis",
-      "status": "next"
+      "status": "map_ready"
     },
     {
       "order": 2,
@@ -16,7 +16,7 @@
       "name": "Êxodo",
       "chapters": 40,
       "asset_dir": "assets/worlds/old_testament/02_exodo",
-      "status": "planned"
+      "status": "map_ready"
     },
     {
       "order": 3,
@@ -24,7 +24,7 @@
       "name": "Levítico",
       "chapters": 27,
       "asset_dir": "assets/worlds/old_testament/03_levitico",
-      "status": "planned"
+      "status": "map_ready"
     },
     {
       "order": 4,
@@ -32,7 +32,7 @@
       "name": "Números",
       "chapters": 36,
       "asset_dir": "assets/worlds/old_testament/04_numeros",
-      "status": "planned"
+      "status": "map_ready"
     },
     {
       "order": 5,
@@ -40,7 +40,7 @@
       "name": "Deuteronômio",
       "chapters": 34,
       "asset_dir": "assets/worlds/old_testament/05_deuteronomio",
-      "status": "planned"
+      "status": "map_ready"
     },
     {
       "order": 6,

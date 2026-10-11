@@ -13,7 +13,7 @@ import pygame
 from src.audio import play_intro
 from src.bible import get_creation_passage
 from src.levels import QUESTIONS
-from src.map_art import draw_genesis_background
+from src.map_art import draw_pentateuch_background
 from src.map_layout import (
     build_path_segments,
     layout_chapter_nodes,
@@ -21,6 +21,7 @@ from src.map_layout import (
     serpentine_nodes,
     world_height,
 )
+from src.pentateuch_maps import PENTATEUCH_IDS, PENTATEUCH_MAPS
 from src.progress import Progress
 from src.worlds import load_old_testament, page_slice
 
@@ -287,15 +288,19 @@ class Game:
             y = start_y + row * (card_h + gap_y)
             rect = pygame.Rect(x, y, card_w, card_h)
 
-            is_genesis = world.id == "genesis"
-            color = (228, 239, 219) if is_genesis else PAPER
+            has_map = world.id in PENTATEUCH_IDS
+            color = (228, 239, 219) if has_map else PAPER
             self.panel(rect, color, 14)
             self.text(f"{world.order:02d}", x + 13, y + 10, MUTED, self.tiny)
             self.text(world.name, x + 13, y + 33, DARK, self.bold)
             self.text(f"{world.chapters} capítulos", x + 13, y + 70, MUTED, self.small)
-            self.text("EM PRODUÇÃO" if is_genesis else "PLANEJADO",
-                      x + 13, y + 94,
-                      GREEN if is_genesis else MUTED, self.tiny)
+            self.text(
+                "MAPA PRONTO" if has_map else "PLANEJADO",
+                x + 13,
+                y + 94,
+                GREEN if has_map else MUTED,
+                self.tiny,
+            )
             self.buttons.append((rect, lambda w=world: self.open_world(w)))
 
         if page > 0:
@@ -306,8 +311,15 @@ class Game:
         self.button("INÍCIO", pygame.Rect(419, 602, 185, 48), lambda: self.go("home"), PAPER)
 
     @property
+    def map_config(self):
+        return PENTATEUCH_MAPS.get(self.current_world.id)
+
+    @property
     def max_map_scroll(self) -> int:
-        return max(0, GENESIS_WORLD_HEIGHT - GENESIS_MAP_VIEW.height)
+        config = self.map_config
+        if config is None:
+            return 0
+        return max(0, config.world_height - GENESIS_MAP_VIEW.height)
 
     def set_map_scroll(self, value: int):
         self.map_scroll = max(0, min(int(value), self.max_map_scroll))
@@ -315,51 +327,42 @@ class Game:
     def scroll_map(self, delta: int):
         self.set_map_scroll(self.map_scroll + delta)
 
-    def visible_genesis_y(self, world_y: int) -> int:
+    def visible_map_y(self, world_y: int) -> int:
         return GENESIS_MAP_VIEW.top + world_y - self.map_scroll
 
-    def genesis_region(self) -> str:
-        center = self.map_scroll + GENESIS_MAP_VIEW.height // 2
-        if center < 700:
-            return "Criação e Éden"
-        if center < 1250:
-            return "Noé e Babel"
-        if center < 2050:
-            return "Abraão, Isaque e Jacó"
-        return "José e Egito"
-
     def world_map(self):
-        if self.current_world.id == "genesis":
-            self.genesis_world_map()
+        if self.current_world.id in PENTATEUCH_IDS:
+            self.pentateuch_world_map()
         else:
             self.generic_world_map()
 
-    def genesis_world_map(self):
+    def pentateuch_world_map(self):
         world = self.current_world
+        config = PENTATEUCH_MAPS[world.id]
         read_count, mastered_count = self.progress.count_world(
             world.id, world.chapters
         )
 
         self.heading(
-            "Mundo 1: Gênesis",
+            f"Mundo {world.order}: {world.name}",
             (
-                f"50 capítulos = 50 fases • Região: {self.genesis_region()} • "
+                f"{world.chapters} capítulos = {world.chapters} fases • "
                 f"lidos {read_count} • dominados {mastered_count}"
             ),
         )
 
-        draw_genesis_background(
+        draw_pentateuch_background(
             self.screen,
             GENESIS_MAP_VIEW,
             self.map_scroll,
-            GENESIS_WORLD_HEIGHT,
+            config,
         )
 
         self.screen.set_clip(GENESIS_MAP_VIEW)
 
-        for (ax, ay), (bx, by) in path_segments(GENESIS_MAP_NODES):
-            a = (GENESIS_MAP_VIEW.left + ax, self.visible_genesis_y(ay))
-            b = (GENESIS_MAP_VIEW.left + bx, self.visible_genesis_y(by))
+        for (ax, ay), (bx, by) in path_segments(config.nodes):
+            a = (GENESIS_MAP_VIEW.left + ax, self.visible_map_y(ay))
+            b = (GENESIS_MAP_VIEW.left + bx, self.visible_map_y(by))
             if (
                 max(a[1], b[1]) < GENESIS_MAP_VIEW.top - 50
                 or min(a[1], b[1]) > GENESIS_MAP_VIEW.bottom + 50
@@ -368,14 +371,14 @@ class Game:
             pygame.draw.line(self.screen, (126, 94, 61), a, b, 13)
             pygame.draw.line(self.screen, (238, 213, 158), a, b, 7)
 
-        for node in GENESIS_MAP_NODES:
+        for node in config.nodes:
             x = GENESIS_MAP_VIEW.left + node.x
-            y = self.visible_genesis_y(node.y)
+            y = self.visible_map_y(node.y)
 
-            if y < GENESIS_MAP_VIEW.top - 70 or y > GENESIS_MAP_VIEW.bottom + 70:
+            if y < GENESIS_MAP_VIEW.top - 80 or y > GENESIS_MAP_VIEW.bottom + 80:
                 continue
 
-            state = self.progress.chapter("genesis", node.chapter)
+            state = self.progress.chapter(world.id, node.chapter)
             if state["mastered"]:
                 fill = GOLD
             elif state["read"]:
@@ -385,7 +388,9 @@ class Game:
 
             hit = pygame.Rect(x - 31, y - 31, 62, 62)
             if hit.collidepoint(pygame.mouse.get_pos()):
-                pygame.draw.circle(self.screen, (255, 248, 205), (x, y), 38)
+                pygame.draw.circle(
+                    self.screen, (255, 248, 205), (x, y), 38
+                )
 
             pygame.draw.circle(self.screen, fill, (x, y), 31)
             pygame.draw.circle(self.screen, DARK, (x, y), 31, 3)
@@ -393,9 +398,9 @@ class Game:
             label = self.small.render(str(node.chapter), True, INK)
             self.screen.blit(label, label.get_rect(center=(x, y)))
 
-            if node.chapter in GENESIS_STAGE_LABELS:
+            if node.chapter in config.landmarks:
                 tag = self.tiny.render(
-                    GENESIS_STAGE_LABELS[node.chapter], True, DARK
+                    config.landmarks[node.chapter], True, DARK
                 )
                 box = tag.get_rect(center=(x, y + 47))
                 bg = box.inflate(12, 7)
@@ -403,12 +408,14 @@ class Game:
                     self.screen, (255, 247, 225), bg, border_radius=6
                 )
                 pygame.draw.rect(
-                    self.screen, (167, 138, 91), bg, 1, border_radius=6
+                    self.screen, config.accent, bg, 1, border_radius=6
                 )
                 self.screen.blit(tag, box)
 
+            # Os sprites especiais existentes continuam aparecendo em Gênesis.
             if (
-                node.chapter in GENESIS_LANDMARKS
+                world.id == "genesis"
+                and node.chapter in GENESIS_LANDMARKS
                 and self.genesis_sprites
             ):
                 sprite_index = GENESIS_LANDMARKS[node.chapter]
@@ -434,7 +441,7 @@ class Game:
         pygame.draw.rect(
             self.screen, (220, 211, 194), track, border_radius=5
         )
-        ratio = GENESIS_MAP_VIEW.height / GENESIS_WORLD_HEIGHT
+        ratio = GENESIS_MAP_VIEW.height / config.world_height
         thumb_h = max(38, int(GENESIS_MAP_VIEW.height * ratio))
         travel = GENESIS_MAP_VIEW.height - thumb_h
         pos_ratio = (
@@ -448,7 +455,9 @@ class Game:
             track.w,
             thumb_h,
         )
-        pygame.draw.rect(self.screen, GREEN, thumb, border_radius=5)
+        pygame.draw.rect(
+            self.screen, config.accent, thumb, border_radius=5
+        )
 
         self.button(
             "MUNDOS",
@@ -472,7 +481,13 @@ class Game:
         self.text("○ não lido", 255, 620, MUTED, self.tiny)
         self.text("● lido", 355, 620, BLUE, self.tiny)
         self.text("★ dominado", 430, 620, GOLD, self.tiny)
-        self.text("50 capítulos no mapa", 560, 620, DARK, self.tiny)
+        self.text(
+            f"{world.chapters} capítulos no mapa",
+            560,
+            620,
+            DARK,
+            self.tiny,
+        )
 
     def generic_world_map(self):
         world = self.current_world
@@ -796,7 +811,7 @@ class Game:
                 if (
                     event.type == pygame.KEYDOWN
                     and self.page == "map"
-                    and self.current_world.id == "genesis"
+                    and self.current_world.id in PENTATEUCH_IDS
                 ):
                     if event.key in (
                         pygame.K_DOWN,
@@ -818,7 +833,7 @@ class Game:
                 if (
                     event.type == pygame.MOUSEWHEEL
                     and self.page == "map"
-                    and self.current_world.id == "genesis"
+                    and self.current_world.id in PENTATEUCH_IDS
                 ):
                     self.scroll_map(-event.y * 150)
 

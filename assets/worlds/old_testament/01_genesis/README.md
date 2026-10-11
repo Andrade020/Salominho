@@ -1,43 +1,13 @@
-# Mundo 01 — Gênesis
+# Mundo — Gênesis
 
-Primeiro mundo visual do Salominho.
+Mapa funcional criado em Python/Pygame.
 
-## Sprites iniciais
+- 50 capítulos = 50 fases;
+- uma bolinha por capítulo;
+- trilha vertical em zigue-zague;
+- rolagem no mapa;
+- progresso por capítulo integrado.
 
-O arquivo `sprites/genesis_spritesheet.png` é um spritesheet horizontal com **6 sprites de 64×64 px** e fundo transparente.
+O arquivo `map_preview.svg` permite visualizar a estrutura do mapa diretamente no GitHub.
 
-| Frame | Tema | Capítulo de referência |
-|---:|---|---:|
-| 0 | Criação / Sol | 1 |
-| 1 | Jardim do Éden | 3 |
-| 2 | Arca de Noé | 6 |
-| 3 | Torre de Babel | 11 |
-| 4 | Tenda de Abraão | 12 |
-| 5 | Túnica de José | 37 |
-
-O `main.py` já recorta esses frames e exibe os ícones acima das bolinhas correspondentes no mapa de Gênesis.
-
-## Próximos assets
-
-```text
-01_genesis/
-├── background.png
-├── thumbnail.png
-├── tileset.png
-├── sprites/
-│   └── genesis_spritesheet.png
-└── props/
-```
-
-Os sprites atuais são placeholders em pixel art produzidos especificamente para o protótipo. O próximo passo é criar o `background.png` do mundo e depois substituir/expandir os sprites conforme a direção de arte definitiva.
-
-
-## Visualização do mapa
-
-O mapa de Gênesis é desenhado dinamicamente pelo Pygame em `src/map_art.py`.
-
-Para conseguir **ver o mapa diretamente pelo GitHub**, sem executar o jogo, foi adicionada a prévia:
-
-- [`map_preview.svg`](./map_preview.svg)
-
-Ela mostra os **50 capítulos como 50 fases**, o caminho serpenteado e as regiões principais do mundo.
+> A decoração definitiva deste mundo será feita na próxima etapa.
