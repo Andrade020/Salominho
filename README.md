@@ -109,3 +109,46 @@ Os cinco primeiros mundos agora possuem mapa próprio no motor rolável:
 Total: **187 capítulos/fases**.
 
 Nesta etapa o foco é estrutural: bolinhas, trilha, clique, rolagem e progresso. A decoração específica de cada mapa será feita em seguida. Cada uma das cinco pastas também possui um `map_preview.svg` para visualização direta no GitHub.
+
+
+## Gerador Python dos 5 mapas do Pentateuco
+
+Os PNGs temáticos dos cinco primeiros livros são gerados por código Python com Pillow, sem depender de imagens externas.
+
+```bash
+python3 tools/generate_pentateuch_maps.py
+```
+
+Saídas:
+
+```text
+assets/worlds/old_testament/01_genesis/map_generated.png
+assets/worlds/old_testament/02_exodo/map_generated.png
+assets/worlds/old_testament/03_levitico/map_generated.png
+assets/worlds/old_testament/04_numeros/map_generated.png
+assets/worlds/old_testament/05_deuteronomio/map_generated.png
+```
+
+Cada capítulo é uma fase. Por padrão, azul representa capítulo concluído e vermelho representa capítulo pendente.
+
+É possível gerar apenas um livro:
+
+```bash
+python3 tools/generate_pentateuch_maps.py --only exodo
+```
+
+E também controlar quais capítulos aparecem como concluídos:
+
+```bash
+python3 tools/generate_pentateuch_maps.py \
+  --completed genesis=1-12 \
+  --completed exodo=1-4,8
+```
+
+Temas implementados:
+
+- Gênesis: Criação/Éden → Queda/Caim/Noé → Babel/Patriarcas → José/Egito.
+- Êxodo: Egito → Moisés → Pragas/Páscoa → Mar Vermelho → Deserto/Maná → Sinai/Tabernáculo.
+- Levítico: Tabernáculo, altar, tendas, áreas rituais e utensílios sagrados.
+- Números: grande acampamento, deserto, peregrinação, oásis, espias e serpente de bronze.
+- Deuteronômio: Moabe, memória da aliança, Jordão, Canaã e Monte Nebo.
