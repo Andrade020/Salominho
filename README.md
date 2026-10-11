@@ -64,3 +64,19 @@ O serviço `bible-api.com` é externo. Para o lançamento, a proposta é importa
 - [ ] Integrar Bíblia offline em SQLite
 - [ ] Desenvolver fases seguintes e salvar progresso
 - [ ] Amigos, duelos e ranking
+
+
+## Protótipo v0.3 — mundos e progresso
+
+A base do jogo agora usa o catálogo real do Antigo Testamento:
+
+- **39 mundos** cadastrados em `data/worlds/old_testament.json`;
+- **929 capítulos/fases** navegáveis;
+- seleção de mundos paginada;
+- mapa de capítulos gerado dinamicamente para qualquer livro;
+- progresso local persistente em `save/progress.json`;
+- estados de capítulo: **não lido**, **lido** e **dominado**;
+- Gênesis 1 continua como a primeira fase jogável do protótipo;
+- devocional demonstrativo integrado.
+
+O cenário atual do mapa é procedural e temporário. Cada livro receberá seu próprio `background.png` em `assets/worlds/old_testament/<livro>/`.

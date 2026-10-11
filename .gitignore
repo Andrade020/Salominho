@@ -9,3 +9,5 @@ cache/*.json
 *.sqlite3
 .DS_Store
 cache/*.wav
+save/*.json
+!save/.gitkeep
