@@ -30,3 +30,14 @@ O `main.py` já recorta esses frames e exibe os ícones acima das bolinhas corre
 ```
 
 Os sprites atuais são placeholders em pixel art produzidos especificamente para o protótipo. O próximo passo é criar o `background.png` do mundo e depois substituir/expandir os sprites conforme a direção de arte definitiva.
+
+
+## Visualização do mapa
+
+O mapa de Gênesis é desenhado dinamicamente pelo Pygame em `src/map_art.py`.
+
+Para conseguir **ver o mapa diretamente pelo GitHub**, sem executar o jogo, foi adicionada a prévia:
+
+- [`map_preview.svg`](./map_preview.svg)
+
+Ela mostra os **50 capítulos como 50 fases**, o caminho serpenteado e as regiões principais do mundo.
