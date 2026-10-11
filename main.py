@@ -13,6 +13,7 @@ import pygame
 from src.audio import play_intro
 from src.bible import get_creation_passage
 from src.levels import QUESTIONS
+from src.map_layout import build_path_segments, layout_chapter_nodes
 from src.progress import Progress
 from src.worlds import load_old_testament, page_slice
 
@@ -142,6 +143,51 @@ class Game:
             pygame.draw.circle(self.screen, GOLD, (x + size // 2, y + size // 2), size // 2)
             self.text("Leão", x + size // 3, y + size // 2)
 
+    def draw_book_background(self, world, rect):
+        """Desenha um fundo procedural simples para o mapa do livro."""
+        if world.id == "genesis":
+            pygame.draw.rect(self.screen, (190, 229, 160), rect, border_radius=24)
+
+            # Trilha principal de terra.
+            pygame.draw.rect(
+                self.screen,
+                (218, 196, 145),
+                pygame.Rect(rect.x + 60, rect.y + 180, rect.w - 120, 95),
+                border_radius=48,
+            )
+
+            # Árvores decorativas.
+            tree_positions = [
+                (rect.x + 70, rect.y + 70),
+                (rect.x + 180, rect.y + 40),
+                (rect.x + 840, rect.y + 70),
+                (rect.x + 780, rect.y + 350),
+                (rect.x + 130, rect.y + 360),
+            ]
+            for tx, ty in tree_positions:
+                pygame.draw.circle(self.screen, (41, 104, 58), (tx, ty), 26)
+                pygame.draw.circle(self.screen, (57, 140, 77), (tx - 10, ty - 8), 20)
+                pygame.draw.circle(self.screen, (57, 140, 77), (tx + 12, ty - 5), 18)
+                pygame.draw.rect(
+                    self.screen,
+                    (109, 72, 42),
+                    pygame.Rect(tx - 5, ty + 15, 10, 24),
+                )
+
+            # Rio decorativo.
+            river = [
+                (rect.x + 40, rect.y + 420),
+                (rect.x + 180, rect.y + 390),
+                (rect.x + 340, rect.y + 430),
+                (rect.x + 540, rect.y + 405),
+                (rect.x + 730, rect.y + 445),
+                (rect.x + 900, rect.y + 420),
+            ]
+            pygame.draw.lines(self.screen, (80, 170, 235), False, river, 24)
+            pygame.draw.lines(self.screen, (180, 235, 255), False, river, 8)
+        else:
+            pygame.draw.rect(self.screen, (218, 228, 208), rect, border_radius=24)
+
     def heading(self, title, subtitle=None):
         self.text(title, 48, 29, INK, self.large)
         self.text(f"XP: {self.xp}", WIDTH - 155, 39, DARK, self.bold)
@@ -230,25 +276,33 @@ class Game:
             chapters, self.chapter_page, self.CHAPTERS_PER_PAGE
         )
         self.chapter_page = page
-        read_count, mastered_count = self.progress.count_world(world.id, world.chapters)
+        read_count, mastered_count = self.progress.count_world(
+            world.id, world.chapters
+        )
 
         self.heading(
             f"Mundo {world.order}: {world.name}",
-            f"{world.chapters} capítulos • lidos {read_count} • dominados {mastered_count}"
+            f"{world.chapters} capítulos • lidos {read_count} • dominados {mastered_count}",
         )
 
-        # Fundo procedural temporário, será substituído por background.png do livro.
-        pygame.draw.rect(self.screen, (221, 233, 196), pygame.Rect(42, 118, 940, 470), border_radius=24)
-        pygame.draw.rect(self.screen, (198, 178, 127), pygame.Rect(90, 305, 840, 76), border_radius=38)
+        map_rect = pygame.Rect(42, 118, 940, 470)
+        self.draw_book_background(world, map_rect)
 
-        cols = 5
-        start_x, start_y = 128, 177
-        gap_x, gap_y = 181, 96
+        nodes = layout_chapter_nodes(
+            visible,
+            (map_rect.x, map_rect.y, map_rect.w, map_rect.h),
+            cols=5,
+        )
 
-        for i, chapter in enumerate(visible):
-            row, col = divmod(i, cols)
-            x = start_x + col * gap_x
-            y = start_y + row * gap_y
+        # Caminho ligando as fases.
+        for start_pos, end_pos in build_path_segments(nodes):
+            pygame.draw.line(self.screen, (110, 90, 70), start_pos, end_pos, 8)
+            pygame.draw.line(self.screen, (193, 170, 120), start_pos, end_pos, 4)
+
+        # Bolinhas dos capítulos.
+        for node in nodes:
+            chapter = node["chapter"]
+            x, y = node["x"], node["y"]
             state = self.progress.chapter(world.id, chapter)
 
             if state["mastered"]:
@@ -258,12 +312,12 @@ class Game:
             else:
                 fill = LOCKED
 
-            pygame.draw.circle(self.screen, fill, (x, y), 30)
-            pygame.draw.circle(self.screen, DARK, (x, y), 30, 3)
+            pygame.draw.circle(self.screen, fill, (x, y), 28)
+            pygame.draw.circle(self.screen, DARK, (x, y), 28, 3)
+
             label = self.small.render(str(chapter), True, INK)
             self.screen.blit(label, label.get_rect(center=(x, y)))
 
-            # Marcos visuais de algumas histórias principais de Gênesis.
             if (
                 world.id == "genesis"
                 and chapter in GENESIS_LANDMARKS
@@ -276,20 +330,36 @@ class Game:
                         (x - 20, y - 72),
                     )
 
-            hit = pygame.Rect(x - 31, y - 31, 62, 62)
+            hit = pygame.Rect(x - 30, y - 30, 60, 60)
             self.buttons.append((hit, lambda c=chapter: self.open_chapter(c)))
 
-        self.text(
-            f"Capítulos {visible[0] if visible else 0}–{visible[-1] if visible else 0}",
-            445, 551, DARK, self.small
-        )
+        if visible:
+            self.text(
+                f"Capítulos {visible[0]}–{visible[-1]}",
+                438, 552, DARK, self.small
+            )
 
         if page > 0:
-            self.button("◀", pygame.Rect(52, 608, 75, 45), self.prev_chapter_page, PAPER)
+            self.button(
+                "◀",
+                pygame.Rect(52, 608, 75, 45),
+                self.prev_chapter_page,
+                PAPER,
+            )
         if page < pages - 1:
-            self.button("▶", pygame.Rect(897, 608, 75, 45), self.next_chapter_page, PAPER)
+            self.button(
+                "▶",
+                pygame.Rect(897, 608, 75, 45),
+                self.next_chapter_page,
+                PAPER,
+            )
 
-        self.button("MUNDOS", pygame.Rect(414, 608, 196, 45), lambda: self.go("world_select"), PAPER)
+        self.button(
+            "MUNDOS",
+            pygame.Rect(414, 608, 196, 45),
+            lambda: self.go("world_select"),
+            PAPER,
+        )
 
         self.text("cinza = não lido", 145, 613, MUTED, self.tiny)
         self.text("azul = lido", 655, 613, BLUE, self.tiny)
