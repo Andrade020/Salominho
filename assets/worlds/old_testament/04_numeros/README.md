@@ -1,13 +1,7 @@
-# Mundo — Números
+# Mundo 04 — Números
 
-Mapa funcional criado em Python/Pygame.
+Background temático: `background.jpg`.
 
-- 36 capítulos = 36 fases;
-- uma bolinha por capítulo;
-- trilha vertical em zigue-zague;
-- rolagem no mapa;
-- progresso por capítulo integrado.
+Tema: deserto, grande acampamento, montanhas e peregrinação.
 
-O arquivo `map_preview.svg` permite visualizar a estrutura do mapa diretamente no GitHub.
-
-> A decoração definitiva deste mundo será feita na próxima etapa.
+O Python/Pygame deve desenhar trilha, capítulos e progresso por cima da arte.

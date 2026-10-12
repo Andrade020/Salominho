@@ -4,7 +4,7 @@ Jogo educativo de estudos bíblicos em **Python + Pygame**, com progressão por 
 
 ## Versão atual
 
-**v0.4.0 — Mapas do Pentateuco**
+**v0.4.1 — Backgrounds temáticos do Pentateuco**
 
 Esta versão consolida a estrutura de mundos, progresso persistente e os cinco primeiros mapas do Antigo Testamento.
 
@@ -58,7 +58,9 @@ Isso permite manter o mapa visualmente rico sem precisar gerar uma nova imagem s
 | **Números** | Deserto, grande acampamento, montanhas e peregrinação |
 | **Deuteronômio** | Planícies de Moabe, Jordão, Canaã e Monte Nebo |
 
-> Os arquivos `map_generated.png` atuais são **protótipos técnicos**. Eles servem para validar a estrutura, quantidade de fases e geração por código, mas **não representam a arte final** dos mapas.
+Os cinco primeiros mundos agora possuem **backgrounds temáticos em pixel art**, armazenados como `background.jpg` em cada pasta do Pentateuco. Os antigos `map_generated.png` e `map_preview.svg` foram removidos.
+
+> A arte de fundo é fixa. A trilha, os capítulos e os estados 🔴/🔵/⭐ continuam sendo responsabilidade do Python/Pygame para que o progresso possa mudar sem regenerar a imagem.
 
 ## Estrutura principal
 
@@ -119,35 +121,17 @@ Também é possível instalar as dependências listadas no projeto:
 pip install -r requirements.txt
 ```
 
-## Gerar os mapas técnicos do Pentateuco
-
-```bash
-python3 tools/generate_pentateuch_maps.py
-```
-
-Saídas:
+## Backgrounds atuais do Pentateuco
 
 ```text
-assets/worlds/old_testament/01_genesis/map_generated.png
-assets/worlds/old_testament/02_exodo/map_generated.png
-assets/worlds/old_testament/03_levitico/map_generated.png
-assets/worlds/old_testament/04_numeros/map_generated.png
-assets/worlds/old_testament/05_deuteronomio/map_generated.png
+assets/worlds/old_testament/01_genesis/background.jpg
+assets/worlds/old_testament/02_exodo/background.jpg
+assets/worlds/old_testament/03_levitico/background.jpg
+assets/worlds/old_testament/04_numeros/background.jpg
+assets/worlds/old_testament/05_deuteronomio/background.jpg
 ```
 
-Gerar apenas um livro:
-
-```bash
-python3 tools/generate_pentateuch_maps.py --only exodo
-```
-
-Definir capítulos concluídos:
-
-```bash
-python3 tools/generate_pentateuch_maps.py \
-  --completed genesis=1-12 \
-  --completed exodo=1-4,8
-```
+Esses arquivos são a base visual dos mundos. A integração deles no renderer do Pygame é o próximo passo da v0.4.x.
 
 ## Testes
 
@@ -178,7 +162,7 @@ A vinheta de abertura é controlada por `src/audio.py`.
 - [x] mapas roláveis;
 - [x] Pentateuco com 187 fases;
 - [x] gerador técnico em Python;
-- [ ] substituir os mapas técnicos por **backgrounds pixel-art finais**;
+- [x] substituir os mapas técnicos por **backgrounds pixel-art temáticos**;
 - [ ] integrar os backgrounds finais ao Pygame;
 - [ ] manter bolinhas/trilha dinâmicas sobre a arte;
 - [ ] preencher leitura, quiz e devocional por capítulo;
@@ -192,3 +176,4 @@ A vinheta de abertura é controlada por `src/audio.py`.
 - **v0.2**: vinheta e áudio.
 - **v0.3**: 39 mundos, 929 capítulos e progresso persistente.
 - **v0.4.0**: mapas do Pentateuco, 187 fases e definição da arquitetura visual final.
+- **v0.4.1**: remoção dos mapas técnicos e inclusão dos cinco backgrounds temáticos do Pentateuco.

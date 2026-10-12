@@ -1,13 +1,7 @@
-# Mundo — Gênesis
+# Mundo 01 — Gênesis
 
-Mapa funcional criado em Python/Pygame.
+Background temático: `background.jpg`.
 
-- 50 capítulos = 50 fases;
-- uma bolinha por capítulo;
-- trilha vertical em zigue-zague;
-- rolagem no mapa;
-- progresso por capítulo integrado.
+Tema: Criação e Éden → Queda/Caim/Noé → Babel/Patriarcas → José/Egito.
 
-O arquivo `map_preview.svg` permite visualizar a estrutura do mapa diretamente no GitHub.
-
-> A decoração definitiva deste mundo será feita na próxima etapa.
+O Python/Pygame deve desenhar trilha, capítulos e progresso por cima da arte.
